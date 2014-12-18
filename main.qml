@@ -51,7 +51,6 @@ ApplicationWindow {
 
             Rectangle {
                 anchors.fill: parent
-                focus: true
 
                 Text {
                     id: timerDisplay
@@ -94,7 +93,9 @@ ApplicationWindow {
 
                     Rectangle {
                         width: ListView.view.width
-                        color: "steelblue"
+                        height: 100
+                        color: "deepskyblue"
+                        radius: 3
                     }
                 }
 
@@ -104,6 +105,7 @@ ApplicationWindow {
                     Rectangle {
                         width: main.width
                         height: 40
+                        color: "transparent"
 
                         Row {
                             id: row
@@ -126,9 +128,17 @@ ApplicationWindow {
                                 anchors.left: parent.left
                                 anchors.margins: 30
                                 font.pointSize: 12
-                                font.italic: false
-                                color: ListView.isCurrentItem?"steelblue":"#555555"
+                                font.italic: tasksList.ListView.isCurrentItem
+                                color: "#555555"
                                 smooth: true
+
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        cbDone.checked = !cbDone.checked;
+                                        tasksList.currentIndex = index;
+                                    }
+                                }
                             }
 
                             Rectangle {
@@ -136,6 +146,7 @@ ApplicationWindow {
                                 height: 40
                                 id: timerCircRect
                                 anchors.left: textToShow.right
+                                color: "transparent"
 
                                 Canvas {
                                     id: timerCirc
