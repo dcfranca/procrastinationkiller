@@ -74,18 +74,33 @@ ApplicationWindow {
                     font.pointSize: 15
                 }
 
+                Image {
+                    id: addTask
+                    source: "qrc:/img/plus-24.png"
+                    anchors.top: currentTask.bottom
+                    x: 10
+                }
+
+                TextInput {
+                    id: addTaskInput
+
+                    anchors.left: addTask.left
+                }
+
                 ListView {
                     id: tasksList
                     width: parent.width
                     height: 200
-                    anchors.top: currentTask.bottom
-                    anchors.margins: 30
+                    anchors.top: addTask.bottom
+                    anchors.margins: 10
                     model: tasksModel
                     clip: true
                     spacing: -5
                     delegate: taskRow
                     highlight: highlightItem
                     focus: true
+
+                    Component.onCompleted: tasksList.forceActiveFocus()
                 }
 
                 Component {
@@ -109,11 +124,28 @@ ApplicationWindow {
 
                         Row {
                             id: row
-                            //spacing: 45
                             width: parent.width
 
                             CheckBox {
                                 id: cbDone
+                                x: 3
+                                style: CheckBoxStyle {
+                                    indicator: Rectangle {
+                                            implicitWidth: 16
+                                            implicitHeight: 16
+                                            radius: 10
+                                            border.color: "#555555"
+                                            border.width: 1
+                                            Rectangle {
+                                                visible: control.checked
+                                                color: "green"
+                                                border.color: "#333"
+                                                radius: 10
+                                                anchors.margins: 4
+                                                anchors.fill: parent
+                                            }
+                                    }
+                                }
 
                                 onCheckedChanged: {
                                     textToShow.font.strikeout = checked
@@ -135,7 +167,6 @@ ApplicationWindow {
                                 MouseArea {
                                     anchors.fill: parent
                                     onClicked: {
-                                        cbDone.checked = !cbDone.checked;
                                         tasksList.currentIndex = index;
                                     }
                                 }
@@ -179,11 +210,36 @@ ApplicationWindow {
                                 text: time
                                 font.pointSize: 10
                                 smooth: true
-                                //anchors.right: parent.right
                                 anchors.left: timerCircRect.right
-                                anchors.margins: 50
+                                anchors.margins: 40
                                 color: "steelblue"
                                 font.bold: true
+                            }
+
+                            Image {
+                                id: playpause
+                                source: "qrc:/img/play-16.png"
+                                anchors.left: totalTime.right
+                                anchors.margins: 10
+                                y: 6
+
+                                property string playState: "paused"
+
+                                MouseArea {
+                                    anchors.fill: parent
+
+                                    onClicked: {
+
+                                        if (playpause.playState === "paused") {
+                                            playpause.source = "qrc:/img/pause-16.png"
+                                            playpause.playState = "working"
+                                        }
+                                        else {
+                                            playpause.source = "qrc:/img/play-16.png"
+                                            playpause.playState = "paused"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
