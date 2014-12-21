@@ -2,10 +2,10 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>ClickableImage.qml</file>
-        <file>img/icon.png</file>
         <file>img/pause-16.png</file>
         <file>img/play-16.png</file>
         <file>img/plus-32.png</file>
         <file>img/plus-24.png</file>
+        <file>img/textfield.png</file>
     </qresource>
 </RCC>

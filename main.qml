@@ -68,30 +68,104 @@ ApplicationWindow {
                     anchors.top: timerDisplay.bottom
                     anchors.topMargin: -50
                     width: timerDisplay.width
-                    //anchors.left: timerDisplay.left
                     horizontalAlignment: Text.AlignHCenter
                     text: "MY CURRENT TASK" //tasksList.itemAt(0).task
                     font.pointSize: 15
                 }
 
-                Image {
-                    id: addTask
-                    source: "qrc:/img/plus-24.png"
-                    anchors.top: currentTask.bottom
-                    x: 10
+                /*BorderImage {
+                    x: 20
+                    anchors.right: addTaskButton.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.margins: 10
+                    source:"qrc:/img/textfield.png"
+                    border.left: 14 ; border.right: 14 ; border.top: 8 ; border.bottom: 8
+                    TextInput {
+                        id: addTaskInput
+                        anchors.top: currentTask.bottom
+                        width: 200
+                        clip: true
+                        font.pointSize: 14
+                        selectionColor: "blue"
+                        //anchors.verticalCenter: main
+
+                        Text {
+                            id: placeholderText
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            visible: !(parent.text.length || parent.inputMethodComposing)
+                            font: parent.font
+                            text: "New task..."
+                            color: "#aaa"
+                        }
+                    }
                 }
 
-                TextInput {
-                    id: addTaskInput
+                Image {
+                    id: addTaskButton
+                    source: "qrc:/img/plus-24.png"
+                    anchors.left: addTaskInput.right
+                    anchors.top: currentTask.bottom
+                    x: 10
+                }*/
 
-                    anchors.left: addTask.left
+                BorderImage {
+                    id: addTaskBorder
+                    source: "qrc:/img/textfield.png"
+                    anchors.top: currentTask.bottom
+                    //anchors.right: addTaskButton.left
+                    width: 300
+                    x: 20
+                    anchors.margins: 20
+                    border.left: 10 ; border.right: 10; border.top: 8; border.bottom: 8
+                    TextInput {
+                        id: addTaskInput
+                        anchors.top: currentTask.bottom
+                        width: 260
+                        clip: true
+                        font.pointSize: 14
+                        selectionColor: "blue"
+                        x: 20
+
+                        onAccepted: {
+                            tasksModel.append({task: addTaskInput.text, time: "30m", remaining: "00:30:00", state: "paused", done: false})
+                        }
+
+                        Text {
+                            id: placeholderText
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            visible: !(parent.text.length || parent.inputMethodComposing)
+                            font: parent.font
+                            text: "New task..."
+                            color: "#aaa"
+                        }
+                    }
+                }
+
+                Image {
+                    id: addTaskButton
+                    source: "qrc:/img/plus-24.png"
+                    anchors.left: addTaskBorder.right
+                    anchors.bottom: addTaskBorder.bottom
+                    anchors.margins: 10
+                    //verticalAlignment: addTaskBorder.verticalCenter
+                    x: 20
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        onClicked: {
+                            tasksModel.append({task: addTaskInput.text, time: "30m", remaining: "00:30:00", state: "paused", done: false})
+                        }
+                    }
                 }
 
                 ListView {
                     id: tasksList
                     width: parent.width
                     height: 200
-                    anchors.top: addTask.bottom
+                    anchors.top: addTaskBorder.bottom
                     anchors.margins: 10
                     model: tasksModel
                     clip: true
