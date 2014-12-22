@@ -73,47 +73,10 @@ ApplicationWindow {
                     font.pointSize: 15
                 }
 
-                /*BorderImage {
-                    x: 20
-                    anchors.right: addTaskButton.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins: 10
-                    source:"qrc:/img/textfield.png"
-                    border.left: 14 ; border.right: 14 ; border.top: 8 ; border.bottom: 8
-                    TextInput {
-                        id: addTaskInput
-                        anchors.top: currentTask.bottom
-                        width: 200
-                        clip: true
-                        font.pointSize: 14
-                        selectionColor: "blue"
-                        //anchors.verticalCenter: main
-
-                        Text {
-                            id: placeholderText
-                            anchors.fill: parent
-                            verticalAlignment: Text.AlignVCenter
-                            visible: !(parent.text.length || parent.inputMethodComposing)
-                            font: parent.font
-                            text: "New task..."
-                            color: "#aaa"
-                        }
-                    }
-                }
-
-                Image {
-                    id: addTaskButton
-                    source: "qrc:/img/plus-24.png"
-                    anchors.left: addTaskInput.right
-                    anchors.top: currentTask.bottom
-                    x: 10
-                }*/
-
                 BorderImage {
                     id: addTaskBorder
                     source: "qrc:/img/textfield.png"
                     anchors.top: currentTask.bottom
-                    //anchors.right: addTaskButton.left
                     width: 300
                     x: 20
                     anchors.margins: 20
@@ -128,7 +91,7 @@ ApplicationWindow {
                         x: 20
 
                         onAccepted: {
-                            tasksModel.append({task: addTaskInput.text, time: "30m", remaining: "00:30:00", state: "paused", done: false})
+                            tasksModel.insert(0, {task: addTaskInput.text, time: "30m", remaining: "00:30:00", state: "paused", done: false})
                         }
 
                         Text {
@@ -149,14 +112,13 @@ ApplicationWindow {
                     anchors.left: addTaskBorder.right
                     anchors.bottom: addTaskBorder.bottom
                     anchors.margins: 10
-                    //verticalAlignment: addTaskBorder.verticalCenter
                     x: 20
 
                     MouseArea {
                         anchors.fill: parent
 
                         onClicked: {
-                            tasksModel.append({task: addTaskInput.text, time: "30m", remaining: "00:30:00", state: "paused", done: false})
+                            tasksModel.insert(0, {task: addTaskInput.text, time: "30m", remaining: "00:30:00", state: "paused", done: false})
                         }
                     }
                 }
@@ -175,6 +137,11 @@ ApplicationWindow {
                     focus: true
 
                     Component.onCompleted: tasksList.forceActiveFocus()
+
+                    onCurrentIndexChanged: {
+                        currentTask.text = tasksModel.get(tasksList.currentIndex).task
+                    }
+
                 }
 
                 Component {
@@ -195,6 +162,8 @@ ApplicationWindow {
                         width: main.width
                         height: 40
                         color: "transparent"
+
+                        Keys.onSpacePressed: cbDone.checked = !cbDone.checked;
 
                         Row {
                             id: row
@@ -225,6 +194,8 @@ ApplicationWindow {
                                     textToShow.font.strikeout = checked
                                     tasksModel.get(index).done = checked
                                 }
+
+                                //Keys.onSpacePressed: checked = true;
                             }
 
                             Text {
@@ -294,7 +265,7 @@ ApplicationWindow {
                                 id: playpause
                                 source: "qrc:/img/play-16.png"
                                 anchors.left: totalTime.right
-                                anchors.margins: 10
+                                anchors.margins: 40
                                 y: 6
 
                                 property string playState: "paused"
@@ -315,6 +286,7 @@ ApplicationWindow {
                                     }
                                 }
                             }
+
                         }
                     }
                 }
