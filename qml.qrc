@@ -7,5 +7,6 @@
         <file>img/plus-32.png</file>
         <file>img/plus-24.png</file>
         <file>img/textfield.png</file>
+        <file>utils.js</file>
     </qresource>
 </RCC>

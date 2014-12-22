@@ -2,6 +2,8 @@ import QtQuick 2.0
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 
+import "qrc:/utils.js" as Utils
+
 ApplicationWindow {
     id: main
     width: 448;
@@ -91,7 +93,9 @@ ApplicationWindow {
                         x: 20
 
                         onAccepted: {
-                            tasksModel.insert(0, {task: addTaskInput.text, time: "30m", remaining: "00:30:00", state: "paused", done: false})
+                            Utils.addTask(tasksModel, addTaskInput.text)
+
+                            //tasksModel.insert(0, {task: addTaskInput.text, time: "30m", remaining: "00:30:00", state: "paused", done: false})
                         }
 
                         Text {
@@ -118,7 +122,8 @@ ApplicationWindow {
                         anchors.fill: parent
 
                         onClicked: {
-                            tasksModel.insert(0, {task: addTaskInput.text, time: "30m", remaining: "00:30:00", state: "paused", done: false})
+                            Utils.addTask(tasksModel, addTaskInput.text)
+                            //tasksModel.insert(0, {task: addTaskInput.text, time: "30m", remaining: "00:30:00", state: "paused", done: false})
                         }
                     }
                 }
@@ -171,7 +176,7 @@ ApplicationWindow {
 
                             CheckBox {
                                 id: cbDone
-                                x: 3
+                                x: 10
                                 style: CheckBoxStyle {
                                     indicator: Rectangle {
                                             implicitWidth: 16
@@ -194,15 +199,13 @@ ApplicationWindow {
                                     textToShow.font.strikeout = checked
                                     tasksModel.get(index).done = checked
                                 }
-
-                                //Keys.onSpacePressed: checked = true;
                             }
 
                             Text {
                                 id: textToShow
                                 text: task
                                 width: 200
-                                anchors.left: parent.left
+                                anchors.left: cbDone.left
                                 anchors.margins: 30
                                 font.pointSize: 12
                                 font.italic: tasksList.ListView.isCurrentItem
