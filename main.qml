@@ -63,6 +63,15 @@ ApplicationWindow {
                     horizontalAlignment: Text.AlignHCenter
                     smooth: true
                     font.italic: false
+
+                    Component.onCompleted: {
+                        var extensionsList = extMng.extensions;
+                        var baseDir = ":extensions/";
+                        for (var x=0; x < extensionsList.length; x++) {
+                            console.log("**** " + extensionsList[x]);
+                            Qt.createComponent(baseDir + extensionsList[x] + "/mainDisplay.qml");
+                        }
+                    }
                 }
 
                 Text {
@@ -93,9 +102,7 @@ ApplicationWindow {
                         x: 20
 
                         onAccepted: {
-                            Utils.addTask(tasksModel, addTaskInput.text)
-
-                            //tasksModel.insert(0, {task: addTaskInput.text, time: "30m", remaining: "00:30:00", state: "paused", done: false})
+                            Utils.addTask(tasksModel, addTaskInput.text, tasksList)
                         }
 
                         Text {
@@ -122,8 +129,7 @@ ApplicationWindow {
                         anchors.fill: parent
 
                         onClicked: {
-                            Utils.addTask(tasksModel, addTaskInput.text)
-                            //tasksModel.insert(0, {task: addTaskInput.text, time: "30m", remaining: "00:30:00", state: "paused", done: false})
+                            Utils.addTask(tasksModel, addTaskInput.text, tasksList)
                         }
                     }
                 }
@@ -198,6 +204,7 @@ ApplicationWindow {
                                 onCheckedChanged: {
                                     textToShow.font.strikeout = checked
                                     tasksModel.get(index).done = checked
+                                    tasksList.currentIndex = index
                                 }
                             }
 
