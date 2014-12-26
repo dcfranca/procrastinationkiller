@@ -8,5 +8,6 @@
         <file>img/plus-24.png</file>
         <file>img/textfield.png</file>
         <file>utils.js</file>
+        <file>extensions/timerTasks/mainDisplay.qml</file>
     </qresource>
 </RCC>

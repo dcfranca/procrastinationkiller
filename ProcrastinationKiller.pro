@@ -2,7 +2,8 @@ TEMPLATE = app
 
 QT += qml quick widgets
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    extensionmanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -14,3 +15,6 @@ include(deployment.pri)
 
 DISTFILES += \
     img/textfield.png
+
+HEADERS += \
+    include/extensionmanager.h
