@@ -3,6 +3,7 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 
 import "qrc:/utils.js" as Utils
+import "qrc:/extensions.js" as Extensions
 
 ApplicationWindow {
     id: main
@@ -53,9 +54,29 @@ ApplicationWindow {
 
             Rectangle {
                 anchors.fill: parent
+                id: homeContainer;
 
-                Text {
-                    id: timerDisplay
+
+                Component.onCompleted: {
+                    //mainDisplay.destroy();
+                    //Extensions.createExtensionComponent("mainDisplay.qml", homeContainer);
+                    var extensionsList = extMng.extensions
+                    var baseDir = "qrc:/extensions/";
+                    for (var x=0; x < extensionsList.length; x++) {
+                        mainDisplay.source = baseDir + extensionsList[x] + "/mainDisplay.qml";
+                        break;
+                    }
+
+                }
+
+                Loader {
+                    id: mainDisplay
+                    width: parent.width
+                    height: text.height
+                }
+
+                /*Text {
+                    id: mainDisplay
                     text: qsTr("TODO")
                     font.pointSize: 100
                     width: parent.width
@@ -64,21 +85,13 @@ ApplicationWindow {
                     smooth: true
                     font.italic: false
 
-                    Component.onCompleted: {
-                        var extensionsList = extMng.extensions;
-                        var baseDir = ":extensions/";
-                        for (var x=0; x < extensionsList.length; x++) {
-                            console.log("**** " + extensionsList[x]);
-                            Qt.createComponent(baseDir + extensionsList[x] + "/mainDisplay.qml");
-                        }
-                    }
-                }
+                }*/
 
                 Text {
                     id: currentTask
-                    anchors.top: timerDisplay.bottom
-                    anchors.topMargin: -50
-                    width: timerDisplay.width
+                    anchors.top: mainDisplay.bottom
+                    //anchors.topMargin: -80
+                    width: homeContainer.width
                     horizontalAlignment: Text.AlignHCenter
                     text: "MY CURRENT TASK" //tasksList.itemAt(0).task
                     font.pointSize: 15
@@ -227,76 +240,22 @@ ApplicationWindow {
                                 }
                             }
 
-                            Rectangle {
-                                width: 40
-                                height: 40
-                                id: timerCircRect
-                                anchors.left: textToShow.right
-                                color: "transparent"
-
-                                Canvas {
-                                    id: timerCirc
-                                    anchors.fill: parent
-
-                                    onPaint: {
-                                        var ctx = getContext("2d")
-                                        ctx.reset()
-                                        var centreX = width/2
-                                        var centreY = height/2
-
-                                        ctx.beginPath()
-                                        ctx.fillStyle = "steelblue"
-                                        ctx.moveTo(centreX, centreY)
-
-                                        ctx.fillStyle = "steelblue"
-                                        ctx.moveTo(centreX, centreY)
-
-                                        ctx.arc(centreX, centreY, width / 4, Math.PI * 0.5, 2*Math.PI, false)
-
-                                        ctx.lineTo(centreX, centreY)
-                                        ctx.closePath()
-                                        ctx.fill()
+                            Component.onCompleted: {
+                                //Extensions.createExtensionComponent("taskRow.qml", row);
+                                var extensionsList = extMng.extensions
+                                var baseDir = "qrc:/extensions/";
+                                for (var x=0; x < extensionsList.length; x++) {
+                                    console.log("**** " + extensionsList[x]);
+                                    var component = Qt.createComponent(baseDir + extensionsList[x] + "/taskRow.qml");
+                                    if (component.status === Component.Ready) {
+                                        console.log("-- Component taskRow loaded");
+                                        var extRow = component.createObject(row);
+                                    }
+                                    else if (component.status === Component.Error) {
+                                        console.log(component.errorString());
                                     }
                                 }
                             }
-
-                            Text {
-                                id: totalTime
-                                text: time
-                                font.pointSize: 10
-                                smooth: true
-                                anchors.left: timerCircRect.right
-                                anchors.margins: 40
-                                color: "steelblue"
-                                font.bold: true
-                            }
-
-                            Image {
-                                id: playpause
-                                source: "qrc:/img/play-16.png"
-                                anchors.left: totalTime.right
-                                anchors.margins: 40
-                                y: 6
-
-                                property string playState: "paused"
-
-                                MouseArea {
-                                    anchors.fill: parent
-
-                                    onClicked: {
-
-                                        if (playpause.playState === "paused") {
-                                            playpause.source = "qrc:/img/pause-16.png"
-                                            playpause.playState = "working"
-                                        }
-                                        else {
-                                            playpause.source = "qrc:/img/play-16.png"
-                                            playpause.playState = "paused"
-                                        }
-                                    }
-                                }
-                            }
-
                         }
                     }
                 }
@@ -329,5 +288,4 @@ ApplicationWindow {
             title: "Settings"
         }
     }
-
 }
