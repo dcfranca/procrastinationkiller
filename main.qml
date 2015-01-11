@@ -86,52 +86,61 @@ ApplicationWindow {
                     font.pointSize: 15
                 }
 
-                BorderImage {
-                    id: addTaskBorder
-                    source: "qrc:/img/textfield.png"
+                RowLayout {
                     anchors.top: currentTask.bottom
-                    width: 300
-                    x: 20
-                    anchors.margins: 20
-                    border.left: 10 ; border.right: 10; border.top: 8; border.bottom: 8
-                    TextInput {
-                        id: addTaskInput
-                        anchors.top: currentTask.bottom
-                        width: 260
-                        clip: true
-                        font.pointSize: 14
-                        selectionColor: "blue"
+                    width: parent.width
+                    id: addTaskLayout
+
+                    BorderImage {
+                        id: addTaskBorder
+                        source: "qrc:/img/textfield.png"
+
+                        width: 300
                         x: 20
+                        anchors.margins: 20
+                        border.left: 10 ; border.right: 10; border.top: 8; border.bottom: 8
 
-                        onAccepted: {
-                            Utils.addTask(tasksModel, addTaskInput.text, tasksList)
-                        }
+                        TextInput {
+                            id: addTaskInput
+                            width: 260
+                            clip: true
+                            font.pointSize: 14
+                            selectionColor: "blue"
+                            x: 20
 
-                        Text {
-                            id: placeholderText
-                            anchors.fill: parent
-                            verticalAlignment: Text.AlignVCenter
-                            visible: !(parent.text.length || parent.inputMethodComposing)
-                            font: parent.font
-                            text: "New task..."
-                            color: "#aaa"
+                            onAccepted: {
+                                Utils.addTask(tasksModel, addTaskInput.text, tasksList)
+                            }
+
+                            Text {
+                                id: placeholderText
+                                anchors.fill: parent
+                                verticalAlignment: Text.AlignVCenter
+                                visible: !(parent.text.length || parent.inputMethodComposing)
+                                font: parent.font
+                                text: "New task..."
+                                color: "#aaa"
+                            }
                         }
                     }
-                }
 
-                Image {
-                    id: addTaskButton
-                    source: "qrc:/img/plus-24.png"
-                    anchors.left: addTaskBorder.right
-                    anchors.bottom: addTaskBorder.bottom
-                    anchors.margins: 10
-                    x: 20
+                    Component.onCompleted: {
+                        Extensions.createExtensionComponent("extraInput.qml", addTaskLayout);
+                    }
 
-                    MouseArea {
-                        anchors.fill: parent
+                    Image {
+                        id: addTaskButton
+                        source: "qrc:/img/plus-24.png"
+                        anchors.right: parent.right
+                        anchors.margins: 40
+                        x: 20
 
-                        onClicked: {
-                            Utils.addTask(tasksModel, addTaskInput.text, tasksList)
+                        MouseArea {
+                            anchors.fill: parent
+
+                            onClicked: {
+                                Utils.addTask(tasksModel, addTaskInput.text, tasksList)
+                            }
                         }
                     }
                 }
@@ -140,7 +149,7 @@ ApplicationWindow {
                     id: tasksList
                     width: parent.width
                     height: 200
-                    anchors.top: addTaskBorder.bottom
+                    anchors.top: addTaskLayout.bottom
                     anchors.margins: 10
                     model: tasksModel
                     clip: true
