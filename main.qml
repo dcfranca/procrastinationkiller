@@ -73,20 +73,8 @@ ApplicationWindow {
                 Loader {
                     id: mainDisplay
                     width: parent.width
-                    height: text.height
+                    //height: text.height
                 }
-
-                /*Text {
-                    id: mainDisplay
-                    text: qsTr("TODO")
-                    font.pointSize: 100
-                    width: parent.width
-                    height: text.height
-                    horizontalAlignment: Text.AlignHCenter
-                    smooth: true
-                    font.italic: false
-
-                }*/
 
                 Text {
                     id: currentTask
@@ -94,7 +82,7 @@ ApplicationWindow {
                     //anchors.topMargin: -80
                     width: homeContainer.width
                     horizontalAlignment: Text.AlignHCenter
-                    text: "MY CURRENT TASK" //tasksList.itemAt(0).task
+                    text: "" //tasksList.itemAt(0).task
                     font.pointSize: 15
                 }
 
@@ -242,20 +230,7 @@ ApplicationWindow {
                             }
 
                             Component.onCompleted: {
-                                //Extensions.createExtensionComponent("taskRow.qml", row);
-                                var extensionsList = extMng.extensions
-                                var baseDir = "qrc:/extensions/";
-                                for (var x=0; x < extensionsList.length; x++) {
-                                    console.log("**** " + extensionsList[x]);
-                                    var component = Qt.createComponent(baseDir + extensionsList[x] + "/taskRow.qml");
-                                    if (component.status === Component.Ready) {
-                                        console.log("-- Component taskRow loaded");
-                                        var extRow = component.createObject(row);
-                                    }
-                                    else if (component.status === Component.Error) {
-                                        console.log(component.errorString());
-                                    }
-                                }
+                                Extensions.createExtensionComponent("taskRow.qml", row, tasksModel.get(index));
                             }
                         }
                     }

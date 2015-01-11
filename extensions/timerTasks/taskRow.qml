@@ -3,6 +3,7 @@ import QtQuick 2.0
 Rectangle {
     anchors.right: parent.right
     anchors.rightMargin: 200
+    property var model: null
 
     Timer {
         id: timer
@@ -18,7 +19,7 @@ Rectangle {
         width: 40
         height: 40
         id: timerCircRect
-        anchors.left: textToShow.right
+        anchors.left: parent.right
         color: "transparent"
 
         Canvas {
@@ -49,13 +50,13 @@ Rectangle {
 
     Text {
         id: totalTime
-        text: time
         font.pointSize: 10
         smooth: true
         anchors.left: timerCircRect.right
         anchors.margins: 40
         color: "steelblue"
         font.bold: true
+        text: model.time
     }
 
     Image {
