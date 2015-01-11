@@ -1,8 +1,18 @@
 import QtQuick 2.0
 
 Rectangle {
-    anchors.left: textToShow.right
-    x: 20
+    anchors.right: parent.right
+    anchors.rightMargin: 200
+
+    Timer {
+        id: timer
+        interval: 500
+        repeat: true
+
+        onTriggered: {
+            timerDisplay.text = "BABABA"
+        }
+    }
 
     Rectangle {
         width: 40
@@ -65,6 +75,7 @@ Rectangle {
                 if (playpause.playState === "paused") {
                     playpause.source = "qrc:/img/pause-16.png"
                     playpause.playState = "working"
+                    timer.start()
                 }
                 else {
                     playpause.source = "qrc:/img/play-16.png"

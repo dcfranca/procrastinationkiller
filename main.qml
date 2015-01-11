@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
+import QtQuick.Layouts 1.1
 
 import "qrc:/utils.js" as Utils
 import "qrc:/extensions.js" as Extensions
@@ -189,13 +190,14 @@ ApplicationWindow {
 
                         Keys.onSpacePressed: cbDone.checked = !cbDone.checked;
 
-                        Row {
+                        RowLayout {
                             id: row
                             width: parent.width
+                            x: 10
 
                             CheckBox {
                                 id: cbDone
-                                x: 10
+
                                 style: CheckBoxStyle {
                                     indicator: Rectangle {
                                             implicitWidth: 16
@@ -226,11 +228,10 @@ ApplicationWindow {
                                 text: task
                                 width: 200
                                 anchors.left: cbDone.left
-                                anchors.margins: 30
+                                anchors.leftMargin: 30
                                 font.pointSize: 12
                                 font.italic: tasksList.ListView.isCurrentItem
                                 color: "#555555"
-                                smooth: true
 
                                 MouseArea {
                                     anchors.fill: parent

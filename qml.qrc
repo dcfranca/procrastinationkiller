@@ -9,5 +9,7 @@
         <file>img/textfield.png</file>
         <file>utils.js</file>
         <file>extensions/timerTasks/mainDisplay.qml</file>
+        <file>extensions/timerTasks/taskRow.qml</file>
+        <file>extensions.js</file>
     </qresource>
 </RCC>
