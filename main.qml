@@ -13,6 +13,8 @@ ApplicationWindow {
     visible: true;
     color: "white";
 
+    property variant extraInput: null
+
     TabView {
         x: 0
         y: 0
@@ -91,6 +93,8 @@ ApplicationWindow {
                     width: parent.width
                     id: addTaskLayout
 
+                    property var inputObjects: []
+
                     BorderImage {
                         id: addTaskBorder
                         source: "qrc:/img/textfield.png"
@@ -107,6 +111,7 @@ ApplicationWindow {
                             font.pointSize: 14
                             selectionColor: "blue"
                             x: 20
+                            focus: true
 
                             onAccepted: {
                                 Utils.addTask(tasksModel, addTaskInput.text, tasksList)
@@ -125,21 +130,33 @@ ApplicationWindow {
                     }
 
                     Component.onCompleted: {
-                        Extensions.createExtensionComponent("extraInput.qml", addTaskLayout);
+                        addTaskLayout.inputObjects = Extensions.createExtensionComponent("extraInput.qml", addTaskLayout);
                     }
 
                     Image {
                         id: addTaskButton
                         source: "qrc:/img/plus-24.png"
                         anchors.right: parent.right
-                        anchors.margins: 40
-                        x: 20
+                        anchors.rightMargin: 30
+                        focus: true
 
                         MouseArea {
                             anchors.fill: parent
+                            id: mouseArea
 
                             onClicked: {
-                                Utils.addTask(tasksModel, addTaskInput.text, tasksList)
+                                var extraData = {};
+                                console.log("Lenght of input objects: " + addTaskLayout.inputObjects.length)
+                                console.log("Element: " + addTaskLayout.inputObjects[0].extraData())
+                                for (var x=0; x<addTaskLayout.inputObjects.length; x++) {
+                                    var extra = addTaskLayout.inputObjects[x].extraData();
+                                    for (var property in addTaskLayout.inputObjects[x].extraData()) {
+                                        extraData[property] = extra[property];
+                                        console.log("Property: " + property + " - Value: " + extra[property])
+                                    }
+                                }
+
+                                Utils.addTask(tasksModel, addTaskInput.text, tasksList, extraData)
                             }
                         }
                     }
