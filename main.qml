@@ -114,7 +114,7 @@ ApplicationWindow {
                             focus: true
 
                             onAccepted: {
-                                Utils.addTask(tasksModel, addTaskInput.text, tasksList)
+                                Utils.addTask(tasksModel, addTaskInput.text, tasksList, addTaskLayout)
                             }
 
                             Text {
@@ -145,18 +145,7 @@ ApplicationWindow {
                             id: mouseArea
 
                             onClicked: {
-                                var extraData = {};
-                                console.log("Lenght of input objects: " + addTaskLayout.inputObjects.length)
-                                console.log("Element: " + addTaskLayout.inputObjects[0].extraData())
-                                for (var x=0; x<addTaskLayout.inputObjects.length; x++) {
-                                    var extra = addTaskLayout.inputObjects[x].extraData();
-                                    for (var property in addTaskLayout.inputObjects[x].extraData()) {
-                                        extraData[property] = extra[property];
-                                        console.log("Property: " + property + " - Value: " + extra[property])
-                                    }
-                                }
-
-                                Utils.addTask(tasksModel, addTaskInput.text, tasksList, extraData)
+                                Utils.addTask(tasksModel, addTaskInput.text, tasksList, addTaskLayout)
                             }
                         }
                     }
