@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
 
+import "qrc:/utils.js" as Utils
+
 RowLayout {
     id: newRowLayout
     anchors.right: parent.right
@@ -19,6 +21,7 @@ RowLayout {
 
         TextInput {
             id: timeInput
+            objectName: "input"
             text: "25:00"
             focus: true
             horizontalAlignment: TextInput.AlignHCenter
@@ -26,6 +29,7 @@ RowLayout {
             font.family: "Segoe UI Light"
             anchors.fill: parent
             inputMask: "99:99"
+
         }
     }
 }

@@ -21,6 +21,7 @@ ApplicationWindow {
         height: parent.height
         currentIndex: 0
         width: parent.width
+        id: tabView
 
         style: TabViewStyle {
             frameOverlap: 1
@@ -54,6 +55,7 @@ ApplicationWindow {
         Tab {
             title: "Home"
             width: parent.width
+            id: tabHome
 
             Rectangle {
                 anchors.fill: parent
@@ -81,7 +83,7 @@ ApplicationWindow {
                 Text {
                     id: currentTask
                     anchors.top: mainDisplay.bottom
-                    //anchors.topMargin: -80
+                    anchors.topMargin: -30
                     width: homeContainer.width
                     horizontalAlignment: Text.AlignHCenter
                     text: "" //tasksList.itemAt(0).task
@@ -94,28 +96,55 @@ ApplicationWindow {
                     id: addTaskLayout
 
                     property var inputObjects: []
+                    property var inputItems: []
 
-                    BorderImage {
+                    Rectangle {
                         id: addTaskBorder
-                        source: "qrc:/img/textfield.png"
 
-                        width: 300
-                        x: 20
-                        anchors.margins: 20
-                        border.left: 10 ; border.right: 10; border.top: 8; border.bottom: 8
+                        width: 260
+                        height: 25
+                        anchors.left: parent.left
+                        anchors.leftMargin: 20
+                        border.width: 2
+                        border.color: "deepskyblue"
+                        radius: 3
+
+                        function inputAccepted() {
+                            Utils.addTask(tasksModel, addTaskInput.text, tasksList, addTaskLayout);
+                        }
+
+                        function retrieveInputs(item) {
+                            for (var x=0; x < item.children.length; x++){
+                                var entry = item.children[x];
+                                if (entry.objectName === "input")
+                                    addTaskLayout.inputItems.push(entry);
+                                else if (entry.children.length > 0)
+                                    retrieveInputs(entry)
+                            }
+                        }
 
                         TextInput {
                             id: addTaskInput
-                            width: 260
+                            width: 250
                             clip: true
-                            font.pointSize: 14
+                            font.pointSize: 11
                             selectionColor: "blue"
-                            x: 20
+                            x: 10
                             focus: true
+                            objectName: "input"
 
-                            onAccepted: {
-                                Utils.addTask(tasksModel, addTaskInput.text, tasksList, addTaskLayout)
+                            Component.onCompleted: {
+                                addTaskInput.onAccepted.connect(addTaskBorder.inputAccepted);
+                                addTaskLayout.inputObjects.forEach(function(entry) {
+                                    addTaskBorder.retrieveInputs(entry);
+                                })
+
+                                addTaskLayout.inputItems.forEach(function(inputField){
+                                    inputField.onAccepted.connect(addTaskBorder.inputAccepted)
+                                })
                             }
+
+                            KeyNavigation.tab: addTaskLayout.inputObjects[0].children[0].children[0]
 
                             Text {
                                 id: placeholderText
