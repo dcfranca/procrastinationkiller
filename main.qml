@@ -43,13 +43,13 @@ ApplicationWindow {
 
         ListModel {
             id: tasksModel
-            ListElement { task: "Current task"; time: "25m"; remaining: "00:02:00"; state: "running"; done: false }
-            ListElement { task: "[Eureca] Add something"; time: "10m"; remaining: "00:10:00"; state: "waiting"; done: false }
-            ListElement { task: "[GS] Auto complete"; time: "45m"; remaining: "00:00:00"; state: "finished"; done: false }
-            ListElement { task: "[GS] Fixing bugs"; time: "30m"; remaining: "00:15:30"; state: "paused"; done: false }
-            ListElement { task: "[GS] Big project"; time: "15m"; remaining: "01:15:00"; state: "waiting"; done: false }
-            ListElement { task: "[Extranet] To do stuff"; time: "15m"; remaining: "00:13:00"; state: "paused"; done: false }
-            ListElement { task: "[Extranet] Whatever"; time: "11m"; remaining: "00:11:00"; state: "paused"; done: false }
+            ListElement { task: "Current task"; time: "25:00"; remaining: "02:00"; state: "running"; done: false }
+            ListElement { task: "[Eureca] Add something"; time: "10:00"; remaining: "10:00"; state: "waiting"; done: false }
+            ListElement { task: "[GS] Auto complete"; time: "45:00"; remaining: "00:00"; state: "finished"; done: false }
+            ListElement { task: "[GS] Fixing bugs"; time: "30:00"; remaining: "15:30"; state: "paused"; done: false }
+            ListElement { task: "[GS] Big project"; time: "15:00"; remaining: "15:00"; state: "waiting"; done: false }
+            ListElement { task: "[Extranet] To do stuff"; time: "15:00"; remaining: "13:00"; state: "paused"; done: false }
+            ListElement { task: "[Extranet] Whatever"; time: "11:00"; remaining: "11:00"; state: "paused"; done: false }
         }
 
         Tab {
@@ -61,10 +61,7 @@ ApplicationWindow {
                 anchors.fill: parent
                 id: homeContainer;
 
-
                 Component.onCompleted: {
-                    //mainDisplay.destroy();
-                    //Extensions.createExtensionComponent("mainDisplay.qml", homeContainer);
                     var extensionsList = extMng.extensions
                     var baseDir = "qrc:/extensions/";
                     for (var x=0; x < extensionsList.length; x++) {
@@ -77,7 +74,6 @@ ApplicationWindow {
                 Loader {
                     id: mainDisplay
                     width: parent.width
-                    //height: text.height
                 }
 
                 Text {

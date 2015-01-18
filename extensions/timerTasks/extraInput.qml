@@ -9,7 +9,7 @@ RowLayout {
     anchors.rightMargin: parent.width/5
 
     function extraData() {
-        return {"time": timeInput.text, "remaining": timeInput.text};
+        return {"time": timeInput.text + ":00", "remaining": timeInput.text + ":00"};
     }
 
     Rectangle {
@@ -21,6 +21,7 @@ RowLayout {
 
         TextInput {
             id: timeInput
+
             objectName: "input"
             text: "25:00"
             focus: true
@@ -28,7 +29,7 @@ RowLayout {
             font.pixelSize: 20
             font.family: "Segoe UI Light"
             anchors.fill: parent
-            inputMask: "99:99"
+            inputMask: "99"
 
         }
     }
