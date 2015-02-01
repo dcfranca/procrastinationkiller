@@ -12,5 +12,6 @@
         <file>extensions/timerTasks/taskRow.qml</file>
         <file>extensions.js</file>
         <file>extensions/timerTasks/extraInput.qml</file>
+        <file>dataStorage.js</file>
     </qresource>
 </RCC>

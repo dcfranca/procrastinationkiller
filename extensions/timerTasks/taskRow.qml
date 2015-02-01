@@ -34,10 +34,6 @@ Rectangle {
 
         onTriggered: {
             var timerDisplay = findQmlElement(tabHome, "timerDisplay")
-
-            //lastStart: 10:20:09
-            //remaining: 25:00 <- show on timerDisplay
-
             if (!lastUpdate || !remaining)
                 return;
 

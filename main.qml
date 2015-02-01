@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.1
 
 import "qrc:/utils.js" as Utils
 import "qrc:/extensions.js" as Extensions
+import "qrc:/dataStorage.js" as DataStorage
 
 ApplicationWindow {
     id: main
@@ -14,6 +15,7 @@ ApplicationWindow {
     color: "white";
 
     property variant extraInput: null
+    property variant db: null
 
     TabView {
         x: 0
@@ -43,13 +45,13 @@ ApplicationWindow {
 
         ListModel {
             id: tasksModel
-            ListElement { task: "Current task"; time: "25:00"; remaining: "02:00"; state: "running"; done: false }
+            /*ListElement { task: "Current task"; time: "25:00"; remaining: "02:00"; state: "running"; done: false }
             ListElement { task: "[Eureca] Add something"; time: "10:00"; remaining: "10:00"; state: "waiting"; done: false }
             ListElement { task: "[GS] Auto complete"; time: "45:00"; remaining: "00:00"; state: "finished"; done: false }
             ListElement { task: "[GS] Fixing bugs"; time: "30:00"; remaining: "15:30"; state: "paused"; done: false }
             ListElement { task: "[GS] Big project"; time: "15:00"; remaining: "15:00"; state: "waiting"; done: false }
             ListElement { task: "[Extranet] To do stuff"; time: "15:00"; remaining: "13:00"; state: "paused"; done: false }
-            ListElement { task: "[Extranet] Whatever"; time: "11:00"; remaining: "11:00"; state: "paused"; done: false }
+            ListElement { task: "[Extranet] Whatever"; time: "11:00"; remaining: "11:00"; state: "paused"; done: false }*/
         }
 
         Tab {
@@ -189,7 +191,21 @@ ApplicationWindow {
                     highlight: highlightItem
                     focus: true
 
-                    Component.onCompleted: tasksList.forceActiveFocus()
+                    Component.onCompleted: {
+                        console.log("Init storage")
+                        DataStorage.init();
+                        var tasks = DataStorage.loadTasks();
+
+                        tasks.forEach(function(entry){
+                            var item = {task: entry.task};
+                            for (var property in entry) {
+                                item[property] = entry[property];
+                            }
+                            tasksModel.insert(0, item);
+                        })
+
+                        tasksList.forceActiveFocus()
+                    }
 
                     onCurrentIndexChanged: {
                         currentTask.text = tasksModel.get(tasksList.currentIndex).task
@@ -201,7 +217,7 @@ ApplicationWindow {
                     id: highlightItem
 
                     Rectangle {
-                        width: ListView.view.width
+                        //width: ListView.view.width
                         height: 100
                         color: "deepskyblue"
                         radius: 3

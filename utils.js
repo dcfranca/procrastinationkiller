@@ -2,6 +2,9 @@
   General functions
 */
 
+.import "qrc:/dataStorage.js" as Storage
+
+
 function addTask(taskModel, task, tasksList, parentLayout) {
     var extraData = loadExtraData(parentLayout)
     if (task.length > 0) {
@@ -10,6 +13,14 @@ function addTask(taskModel, task, tasksList, parentLayout) {
         for (var property in extraData) {
             item[property] = extraData[property];
         }
+
+        delete item['task']
+
+        console.log("Task: " + task);
+        console.log("Item: " + JSON.stringify(item));
+
+        Storage.AddOrUpdateTask(task, item);
+        item['task'] = task;
 
         tasksModel.insert(0, item);
         tasksList.currentIndex = 0;
