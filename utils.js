@@ -8,7 +8,7 @@
 function addTask(taskModel, task, tasksList, parentLayout) {
     var extraData = loadExtraData(parentLayout)
     if (task.length > 0) {
-        var item = {task: task, state: "paused", done: false};
+        var item = {task: task, state: "paused"};
         console.log("Extra data: " + extraData);
         for (var property in extraData) {
             item[property] = extraData[property];

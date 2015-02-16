@@ -45,13 +45,6 @@ ApplicationWindow {
 
         ListModel {
             id: tasksModel
-            /*ListElement { task: "Current task"; time: "25:00"; remaining: "02:00"; state: "running"; done: false }
-            ListElement { task: "[Eureca] Add something"; time: "10:00"; remaining: "10:00"; state: "waiting"; done: false }
-            ListElement { task: "[GS] Auto complete"; time: "45:00"; remaining: "00:00"; state: "finished"; done: false }
-            ListElement { task: "[GS] Fixing bugs"; time: "30:00"; remaining: "15:30"; state: "paused"; done: false }
-            ListElement { task: "[GS] Big project"; time: "15:00"; remaining: "15:00"; state: "waiting"; done: false }
-            ListElement { task: "[Extranet] To do stuff"; time: "15:00"; remaining: "13:00"; state: "paused"; done: false }
-            ListElement { task: "[Extranet] Whatever"; time: "11:00"; remaining: "11:00"; state: "paused"; done: false }*/
         }
 
         Tab {
@@ -241,6 +234,7 @@ ApplicationWindow {
 
                             CheckBox {
                                 id: cbDone
+                                objectName: "cbDone"
 
                                 style: CheckBoxStyle {
                                     indicator: Rectangle {
@@ -262,7 +256,7 @@ ApplicationWindow {
 
                                 onCheckedChanged: {
                                     textToShow.font.strikeout = checked
-                                    tasksModel.get(index).done = checked
+                                    tasksModel.get(index).status = "finished"
                                     tasksList.currentIndex = index
                                 }
                             }
@@ -304,7 +298,7 @@ ApplicationWindow {
                     onClicked: {
                         for (var x=0; x<tasksList.count; x++) {
                             var item = tasksModel.get(x)
-                            if (item.done) {
+                            if (item.status === "finished") {
                                 tasksModel.remove(x)
                                 x--;
                             }

@@ -7,13 +7,24 @@ Rectangle {
     property var lastUpdate: null
     property var remaining: null
 
+    function toSeconds(time) {
+        var min = parseInt(time.substr(0,2));
+        var sec = parseInt(time.substr(3,5));
+
+        return sec + (min * 60);
+
+    }
+
     function findQmlElement(root, id) {
         if (root.objectName === id)
             return root;
         for (var x=0; x < root.children.length; x++) {
             var elem = findQmlElement(root.children[x], id);
             if (elem)
+            {
+                //console.log("Element found: " + elem)
                 return elem;
+            }
         }
 
         return;
@@ -39,16 +50,23 @@ Rectangle {
 
             var subtract = new Date() - lastUpdate;
             lastUpdate = new Date()
-            console.log("REMAINING: " + remaining)
+            //console.log("REMAINING: " + remaining)
             remaining = new Date(remaining - subtract);
 
-            if (remaining.getHours() <= 0 && remaining.getMinutes() <= 0) {
+            if (remaining.getMinutes() <= 0 && remaining.getSeconds() <= 0) {
                 timer.stop()
                 timerDisplay.text = "00:00";
+                model.status = "finished";
+                var cbDone = findQmlElement(tabHome, "cbDone")
+                cbDone.checked = true;
+                playpause.source = "qrc:/img/play-16.png"
+                playpause.playState = "paused"
             }
             else {
                 timerDisplay.text = addZero(remaining.getMinutes()) + ":" + addZero(remaining.getSeconds());
             }
+            model.remaining = timerDisplay.text;
+            timerCirc.requestPaint();
         }
     }
 
@@ -64,6 +82,7 @@ Rectangle {
             anchors.fill: parent
 
             onPaint: {
+                console.log("Painting...")
                 var ctx = getContext("2d")
                 ctx.reset()
                 var centreX = width/2
@@ -76,7 +95,11 @@ Rectangle {
                 ctx.fillStyle = "steelblue"
                 ctx.moveTo(centreX, centreY)
 
-                ctx.arc(centreX, centreY, width / 4, Math.PI * 0.5, 2*Math.PI, false)
+                var secRemaining = toSeconds(model.remaining);
+                var secTotal = toSeconds(model.time)
+                var ratio = (secRemaining/secTotal) * 2;
+                console.log("TOTAL " + secTotal + " - REMAINING: " + secRemaining + " - RATIO: " + ratio);
+                ctx.arc(centreX, centreY, width / 4, Math.PI * (2-ratio), 2*Math.PI, false)
 
                 ctx.lineTo(centreX, centreY)
                 ctx.closePath()
@@ -113,7 +136,8 @@ Rectangle {
                 if (playpause.playState === "paused") {
                     playpause.source = "qrc:/img/pause-16.png"
                     lastUpdate = new Date()
-                    console.log(model.remaining)
+                    //console.log(model.remaining)
+                    //model.remaining = "00:05"
 
                     var min = parseInt(model.remaining.substr(0,2))
                     var sec = parseInt(model.remaining.substr(3,5))
