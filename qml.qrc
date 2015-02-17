@@ -13,5 +13,6 @@
         <file>extensions.js</file>
         <file>extensions/timerTasks/extraInput.qml</file>
         <file>dataStorage.js</file>
+        <file>media/alarm.wav</file>
     </qresource>
 </RCC>

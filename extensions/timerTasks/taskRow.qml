@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtMultimedia 5.0
 
 Rectangle {
     anchors.right: parent.right
@@ -30,6 +31,12 @@ Rectangle {
         return;
     }
 
+    SoundEffect {
+        id: soundAlarm
+        source: "qrc:/media/alarm.wav"
+        loops: 1
+    }
+
     Timer {
         id: timer
         interval: 500
@@ -55,6 +62,7 @@ Rectangle {
 
             if (remaining.getMinutes() <= 0 && remaining.getSeconds() <= 0) {
                 timer.stop()
+                soundAlarm.play()
                 timerDisplay.text = "00:00";
                 model.status = "finished";
                 var cbDone = findQmlElement(tabHome, "cbDone")
