@@ -2,9 +2,11 @@ import QtQuick 2.0
 import QtMultimedia 5.0
 
 Rectangle {
+    objectName: "taskRow"
     anchors.right: parent.right
     anchors.rightMargin: 200
     property var model: null
+    property var index: null
     property var lastUpdate: null
     property var remaining: null
 
@@ -29,6 +31,41 @@ Rectangle {
         }
 
         return;
+    }
+
+    function playOrPause(mouseX, mouseY) {
+        if (playpause.playState === "paused") {
+            playpause.source = "qrc:/img/pause-16.png"
+            lastUpdate = new Date()
+            //console.log(model.remaining)
+            //model.remaining = "00:05"
+
+            var min = parseInt(model.remaining.substr(0,2))
+            var sec = parseInt(model.remaining.substr(3,5))
+
+            remaining = new Date(null, null, null, 0, min, sec, 0);
+            timer.start();
+            playpause.playState = "running";
+
+            if (mouseX && mouseY) {
+                console.log("PARENT: " + parent);
+                var tasksList = findQmlElement(tabHome, "tasksList");
+                tasksList.currentIndex = index;
+            }
+        }
+        else {
+            console.log("Stopping...")
+            playpause.source = "qrc:/img/play-16.png"
+            playpause.playState = "paused"
+            timer.stop()
+            var timerDisplay = findQmlElement(tabHome, "timerDisplay");
+            model.remaining = timerDisplay.text;
+        }
+    }
+
+    Keys.onReturnPressed: {
+        console.log("On Enter pressed")
+        playOrPause(null, null);
     }
 
     SoundEffect {
@@ -90,7 +127,7 @@ Rectangle {
             anchors.fill: parent
 
             onPaint: {
-                console.log("Painting...")
+                //console.log("Painting...")
                 var ctx = getContext("2d")
                 ctx.reset()
                 var centreX = width/2
@@ -106,7 +143,7 @@ Rectangle {
                 var secRemaining = toSeconds(model.remaining);
                 var secTotal = toSeconds(model.time)
                 var ratio = (secRemaining/secTotal) * 2;
-                console.log("TOTAL " + secTotal + " - REMAINING: " + secRemaining + " - RATIO: " + ratio);
+                //console.log("TOTAL " + secTotal + " - REMAINING: " + secRemaining + " - RATIO: " + ratio);
                 ctx.arc(centreX, centreY, width / 4, Math.PI * (2-ratio), 2*Math.PI, false)
 
                 ctx.lineTo(centreX, centreY)
@@ -141,7 +178,8 @@ Rectangle {
 
             onClicked: {
 
-                if (playpause.playState === "paused") {
+                playOrPause(mouseX, mouseY);
+                /*if (playpause.playState === "paused") {
                     playpause.source = "qrc:/img/pause-16.png"
                     lastUpdate = new Date()
                     //console.log(model.remaining)
@@ -161,7 +199,7 @@ Rectangle {
                     timer.stop()
                     var timerDisplay = findQmlElement(tabHome, "timerDisplay");
                     model.remaining = timerDisplay.text;
-                }
+                }*/
             }
         }
     }

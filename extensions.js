@@ -11,7 +11,7 @@ function createExtensionComponent(element, parent, extra) {
         var component = Qt.createComponent(baseDir + extensionsList[x] + "/" + element);
         if (component.status === Component.Ready) {
             console.log("-- Component " + element + " loaded");
-            objects.push(component.createObject(parent, {"model": extra}));
+            objects.push(component.createObject(parent, extra));
         }
         else if (component.status === Component.Error) {
             console.log(component.errorString());

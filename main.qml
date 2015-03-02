@@ -114,6 +114,16 @@ ApplicationWindow {
                             }
                         }
 
+                        function retrieveTaskRow(item) {
+                            for (var x=0; x < item.children.length; x++){
+                                var entry = item.children[x];
+                                if (entry.objectName === "taskRow")
+                                    return entry;
+                                else if (entry.children.length > 0)
+                                    retrieveTaskRow(entry)
+                            }
+                        }
+
                         TextInput {
                             id: addTaskInput
                             width: 250
@@ -173,6 +183,7 @@ ApplicationWindow {
 
                 ListView {
                     id: tasksList
+                    objectName: "tasksList"
                     width: parent.width
                     height: 200
                     anchors.top: addTaskLayout.bottom
@@ -226,6 +237,15 @@ ApplicationWindow {
                         color: "transparent"
 
                         Keys.onSpacePressed: cbDone.checked = !cbDone.checked;
+                        /*Keys.forwardTo: {
+                            //var tk = addTaskBorder.retrieveTaskRow(taskRow)
+                            //console.log("Retrieved: " + tk)
+                            //return tk;
+                        }*/
+                        Keys.onReturnPressed: {
+                            console.log("On Enter pressed")
+                        }
+
 
                         RowLayout {
                             id: row
@@ -280,7 +300,7 @@ ApplicationWindow {
                             }
 
                             Component.onCompleted: {
-                                Extensions.createExtensionComponent("taskRow.qml", row, tasksModel.get(index));
+                                Extensions.createExtensionComponent("taskRow.qml", row, {"model":tasksModel.get(index), "index": index});
                             }
                         }
                     }
