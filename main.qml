@@ -105,6 +105,7 @@ ApplicationWindow {
                         }
 
                         function retrieveInputs(item) {
+                            if (!item) return;
                             for (var x=0; x < item.children.length; x++){
                                 var entry = item.children[x];
                                 if (entry.objectName === "input")
@@ -246,6 +247,14 @@ ApplicationWindow {
                             console.log("On Enter pressed")
                         }
 
+                        MouseArea {
+                            anchors.fill: parent
+
+                            onClicked: {
+                                tasksList.currentIndex = index;
+                            }
+                        }
+
 
                         RowLayout {
                             id: row
@@ -300,7 +309,7 @@ ApplicationWindow {
                             }
 
                             Component.onCompleted: {
-                                Extensions.createExtensionComponent("taskRow.qml", row, {"model":tasksModel.get(index), "index": index});
+                                Extensions.createExtensionComponent("taskRow.qml", row, {"model":tasksModel.get(index), "listModel": tasksModel,"index": index});
                             }
                         }
                     }
