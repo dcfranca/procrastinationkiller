@@ -6,9 +6,15 @@ Rectangle {
     anchors.right: parent.right
     anchors.rightMargin: 200
     property var model: null
+    property var listModel: null
+    property var listView: null
     property var index: null
     property var lastUpdate: null
     property var remaining: null
+    property var rowTimer: null
+    property var rowPlayPause: null
+
+    Component.onCompleted: state = "paused"
 
     function toSeconds(time) {
         var min = parseInt(time.substr(0,2));
@@ -19,6 +25,7 @@ Rectangle {
     }
 
     function findQmlElement(root, id) {
+        console.log("ROOT FOR ID: " + id + ": " + root)
         if (root.objectName === id)
             return root;
         for (var x=0; x < root.children.length; x++) {
@@ -33,11 +40,27 @@ Rectangle {
         return;
     }
 
+    function stopAll() {
+
+        for (var x=0; x < listView.contentItem.children.length; x++) {
+            console.log("INDEX: " + x)
+            var taskRow = listView.contentItem.children[x];
+            var extTaskRow = findQmlElement(taskRow, "taskRow")
+            console.log("FOUND: " + extTaskRow)
+            if (extTaskRow) {
+                extTaskRow.rowPlayPause.source = "qrc:/img/play-16.png"
+                extTaskRow.rowTimer.stop()
+            }
+
+            timer.stop()
+        }
+    }
+
     function playOrPause(mouseX, mouseY) {
         if (playpause.playState === "paused") {
             playpause.source = "qrc:/img/pause-16.png"
             lastUpdate = new Date()
-            //console.log(model.remaining)
+            stopAll();
             //model.remaining = "00:05"
 
             var min = parseInt(model.remaining.substr(0,2))
@@ -46,9 +69,10 @@ Rectangle {
             remaining = new Date(null, null, null, 0, min, sec, 0);
             timer.start();
             playpause.playState = "running";
+            playpause.source = "qrc:/img/pause-16.png"
 
             if (mouseX && mouseY) {
-                console.log("PARENT: " + parent);
+                //console.log("PARENT: " + parent);
                 var tasksList = findQmlElement(tabHome, "tasksList");
                 tasksList.currentIndex = index;
             }
@@ -76,8 +100,11 @@ Rectangle {
 
     Timer {
         id: timer
+        objectName: "timer"
         interval: 500
         repeat: true
+
+        Component.onCompleted: rowTimer = timer;
 
         function addZero(val) {
             if (val < 10) {
@@ -172,6 +199,8 @@ Rectangle {
         y: 6
 
         property string playState: "paused"
+
+        Component.onCompleted: rowPlayPause = playpause
 
         MouseArea {
             anchors.fill: parent

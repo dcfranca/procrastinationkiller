@@ -63,7 +63,6 @@ ApplicationWindow {
                         mainDisplay.source = baseDir + extensionsList[x] + "/mainDisplay.qml";
                         break;
                     }
-
                 }
 
                 Loader {
@@ -309,7 +308,7 @@ ApplicationWindow {
                             }
 
                             Component.onCompleted: {
-                                Extensions.createExtensionComponent("taskRow.qml", row, {"model":tasksModel.get(index), "listModel": tasksModel,"index": index});
+                                Extensions.createExtensionComponent("taskRow.qml", row, {"model":tasksModel.get(index), "listModel": tasksModel, "listView": tasksList, "index": index});
                             }
                         }
                     }
