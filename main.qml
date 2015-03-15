@@ -208,7 +208,8 @@ ApplicationWindow {
                             tasksModel.insert(0, item);
                         })
 
-                        tasksList.forceActiveFocus()
+                        tasksList.forceActiveFocus();
+                        tasksList.currentIndex = 0;
                     }
 
                     onCurrentIndexChanged: {
