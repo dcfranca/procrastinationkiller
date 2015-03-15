@@ -185,7 +185,7 @@ ApplicationWindow {
                     id: tasksList
                     objectName: "tasksList"
                     width: parent.width
-                    height: 200
+                    height: 300
                     anchors.top: addTaskLayout.bottom
                     anchors.margins: 10
                     model: tasksModel

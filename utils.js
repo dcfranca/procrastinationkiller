@@ -4,7 +4,6 @@
 
 .import "qrc:/dataStorage.js" as Storage
 
-
 function addTask(taskModel, task, tasksList, parentLayout) {
     var extraData = loadExtraData(parentLayout)
     if (task.length > 0) {
@@ -31,7 +30,7 @@ function loadExtraData(parentLayout) {
     var extraData = {};
     for (var x=0; x<parentLayout.inputObjects.length; x++) {
         var extra = parentLayout.inputObjects[x].extraData();
-        for (var property in parentLayout.inputObjects[x].extraData()) {
+        for (var property in extra) {
             extraData[property] = extra[property];
         }
     }
