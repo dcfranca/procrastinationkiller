@@ -137,11 +137,13 @@ ApplicationWindow {
                             Component.onCompleted: {
                                 addTaskInput.onAccepted.connect(addTaskBorder.inputAccepted);
                                 //For each qml input extension find all input items
+                                console.log("Input Objects: " + addTaskLayout.inputObjects)
                                 addTaskLayout.inputObjects.forEach(function(entry) {
                                     addTaskBorder.retrieveInputs(entry);
                                 })
 
                                 //For each input item connect the signal onAccepted with the function
+                                console.log("Input Items: " + addTaskLayout.inputItems)
                                 addTaskLayout.inputItems.forEach(function(inputField){
                                     inputField.onAccepted.connect(addTaskBorder.inputAccepted)
                                 })
@@ -162,7 +164,7 @@ ApplicationWindow {
                     }
 
                     Component.onCompleted: {
-                        addTaskLayout.inputObjects = Extensions.createExtensionComponent("extraInput.qml", addTaskLayout);
+                        addTaskLayout.inputObjects = Extensions.createExtensionComponent("extraInput.qml", addTaskLayout, {});
                     }
 
                     Image {
