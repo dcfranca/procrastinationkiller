@@ -136,10 +136,12 @@ ApplicationWindow {
 
                             Component.onCompleted: {
                                 addTaskInput.onAccepted.connect(addTaskBorder.inputAccepted);
+                                //For each qml input extension find all input items
                                 addTaskLayout.inputObjects.forEach(function(entry) {
                                     addTaskBorder.retrieveInputs(entry);
                                 })
 
+                                //For each input item connect the signal onAccepted with the function
                                 addTaskLayout.inputItems.forEach(function(inputField){
                                     inputField.onAccepted.connect(addTaskBorder.inputAccepted)
                                 })
