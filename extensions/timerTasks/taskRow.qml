@@ -183,6 +183,7 @@ Rectangle {
     Text {
         id: totalTime
         font.pointSize: 10
+        anchors.topMargin: 5
         smooth: true
         anchors.left: timerCircRect.right
         anchors.margins: 40
