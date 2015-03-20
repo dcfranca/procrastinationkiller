@@ -68,3 +68,12 @@ function AddOrUpdateTask(name, params) {
     }
 }
 
+function DeleteTask(name) {
+    console.log("DeleteTask " + name)
+    var db = getDatabase();
+    db.transaction(
+        function(tx) {
+            tx.executeSql('DELETE FROM taskData WHERE name = ?', [name]);
+        }
+    )
+}

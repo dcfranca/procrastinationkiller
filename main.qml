@@ -73,7 +73,7 @@ ApplicationWindow {
                 Text {
                     id: currentTask
                     anchors.top: mainDisplay.bottom
-                    anchors.topMargin: -30
+                    //anchors.topMargin: -30
                     width: homeContainer.width
                     horizontalAlignment: Text.AlignHCenter
                     text: "" //tasksList.itemAt(0).task
@@ -332,6 +332,8 @@ ApplicationWindow {
                         for (var x=0; x<tasksList.count; x++) {
                             var item = tasksModel.get(x)
                             if (item.status === "finished") {
+                                DataStorage.DeleteTask(item.task)
+
                                 tasksModel.remove(x)
                                 x--;
                             }
