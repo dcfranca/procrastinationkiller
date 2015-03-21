@@ -101,6 +101,7 @@ ApplicationWindow {
 
                         function inputAccepted() {
                             Utils.addTask(tasksModel, addTaskInput.text, tasksList, addTaskLayout);
+                            tasksList.forceActiveFocus();
                         }
 
                         function retrieveInputs(item) {
@@ -255,6 +256,7 @@ ApplicationWindow {
                             anchors.fill: parent
 
                             onClicked: {
+                                tasksList.forceActiveFocus();
                                 tasksList.currentIndex = index;
                             }
                         }

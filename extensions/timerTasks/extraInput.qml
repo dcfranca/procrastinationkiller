@@ -23,7 +23,7 @@ RowLayout {
             id: timeInput
 
             objectName: "input"
-            text: "25:00"
+            text: "25"
             focus: true
             horizontalAlignment: TextInput.AlignHCenter
             font.pixelSize: 20

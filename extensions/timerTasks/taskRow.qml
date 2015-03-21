@@ -135,7 +135,7 @@ Rectangle {
                 playpause.playState = "paused"
             }
             else {
-                timerDisplay.text = addZero(remaining.getMinutes()) + ":" + addZero(remaining.getSeconds());
+                timerDisplay.text = addZero(remaining.getMinutes()) + "." + addZero(remaining.getSeconds());
             }
             model.remaining = timerDisplay.text;
             timerCirc.requestPaint();
