@@ -228,7 +228,7 @@ ApplicationWindow {
 
                     Rectangle {
                         //width: ListView.view.width
-                        height: 100
+                        height: taskRow.height
                         color: "deepskyblue"
                         radius: 3
                     }
@@ -243,11 +243,6 @@ ApplicationWindow {
                         color: "transparent"
 
                         Keys.onSpacePressed: cbDone.checked = !cbDone.checked;
-                        /*Keys.forwardTo: {
-                            //var tk = addTaskBorder.retrieveTaskRow(taskRow)
-                            //console.log("Retrieved: " + tk)
-                            //return tk;
-                        }*/
                         Keys.onReturnPressed: {
                             console.log("On Enter pressed")
                         }

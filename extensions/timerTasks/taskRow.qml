@@ -122,15 +122,18 @@ Rectangle {
             var subtract = new Date() - lastUpdate;
             lastUpdate = new Date()
             //console.log("REMAINING: " + remaining)
-            remaining = new Date(remaining - subtract);
+            var updatedRemaining = remaining - subtract;
+            remaining = new Date(updatedRemaining);
+            var secondsRemaining = toSeconds(addZero(remaining.getMinutes()) + ":" + addZero(remaining.getSeconds()));
 
-            if (remaining.getMinutes() <= 0 && remaining.getSeconds() <= 0) {
+            if (secondsRemaining <= 0) {
                 timer.stop()
                 soundAlarm.play()
                 timerDisplay.text = "00:00";
                 model.status = "finished";
-                var cbDone = findQmlElement(tabHome, "cbDone")
-                cbDone.checked = true;
+                model.remaining = model.time;
+                //var cbDone = findQmlElement(tabHome, "cbDone")
+                //cbDone.checked = true;
                 playpause.source = "qrc:/img/play-16.png"
                 playpause.playState = "paused"
             }
