@@ -3,7 +3,8 @@ TEMPLATE = app
 QT += qml quick widgets sql
 
 SOURCES += main.cpp \
-    extensionmanager.cpp
+    extensionmanager.cpp \
+    precisiontimer.cpp
 
 RESOURCES += qml.qrc
 
@@ -17,4 +18,5 @@ DISTFILES += \
     img/textfield.png
 
 HEADERS += \
-    include/extensionmanager.h
+    include/extensionmanager.h \
+    include/precisiontimer.h

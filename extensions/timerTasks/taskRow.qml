@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtMultimedia 5.0
+import com.dfranca.tools 1.0
 
 Rectangle {
     objectName: "taskRow"
@@ -98,11 +99,11 @@ Rectangle {
         loops: 1
     }
 
-    Timer {
+    PrecisionTimer {
         id: timer
         objectName: "timer"
         interval: 500
-        repeat: true
+        //repeat: true
 
         Component.onCompleted: rowTimer = timer;
 
