@@ -8,7 +8,7 @@
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QtQml>
-#include "include/precisiontimer.h"
+#include "include/alarm.h"
 
 #include "include/extensionmanager.h"
 
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     ExtensionManager extMng;
     engine.rootContext()->setContextProperty("extMng", &extMng);
-    qmlRegisterType<PrecisionTimer>("com.dfranca.tools", 1, 0, "PrecisionTimer");
+    qmlRegisterType<Alarm>("com.dfranca.tools", 1, 0, "Alarm");
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     return app.exec();

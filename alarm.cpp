@@ -1,17 +1,24 @@
-#include "include/precisiontimer.h"
+#include "include/alarm.h"
 
-PrecisionTimer::PrecisionTimer(QObject *parent) : QTimer(parent)
+Alarm::Alarm(QObject *parent) : QObject(parent)
 {
-    this->setTimerType(Qt::PreciseTimer);
-    connect(this, &PrecisionTimer::timeout, this, &PrecisionTimer::handleTimeOut);
+    m_timerAlarm.setTimerType(Qt::PreciseTimer);
+    connect(&m_timerInterval, &QTimer::timeout, this, &Alarm::handleTriggered);
+    connect(&m_timerAlarm, &QTimer::timeout, this, &Alarm::handleTimeout);
 }
 
-PrecisionTimer::~PrecisionTimer()
+Alarm::~Alarm()
 {
 
 }
 
-void PrecisionTimer::handleTimeOut()
+void Alarm::handleTimeout()
+{
+    qDebug() << "Emiting timeout...";
+    emit timeout();
+}
+
+void Alarm::handleTriggered()
 {
     emit triggered();
 }

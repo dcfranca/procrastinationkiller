@@ -68,6 +68,7 @@ Rectangle {
             var sec = parseInt(model.remaining.substr(3,5))
 
             remaining = new Date(null, null, null, 0, min, sec, 0);
+            timer.time = (min * 60 + sec);
             timer.start();
             playpause.playState = "running";
             playpause.source = "qrc:/img/pause-16.png"
@@ -99,10 +100,10 @@ Rectangle {
         loops: 1
     }
 
-    PrecisionTimer {
+    Alarm {
         id: timer
         objectName: "timer"
-        interval: 500
+        //time: 1500
         //repeat: true
 
         Component.onCompleted: rowTimer = timer;
@@ -113,6 +114,21 @@ Rectangle {
             }
 
             return val;
+        }
+
+        onTimeout: {
+            var timerDisplay = findQmlElement(tabHome, "timerDisplay")
+            console.log("QML: onTimeout: " + timerDisplay);
+            if (!lastUpdate || !remaining)
+                return;
+
+            timer.stop()
+            soundAlarm.play()
+            timerDisplay.text = "00:00";
+            model.status = "finished";
+            model.remaining = model.time;
+            playpause.source = "qrc:/img/play-16.png"
+            playpause.playState = "paused"
         }
 
         onTriggered: {
@@ -127,20 +143,7 @@ Rectangle {
             remaining = new Date(updatedRemaining);
             var secondsRemaining = toSeconds(addZero(remaining.getMinutes()) + ":" + addZero(remaining.getSeconds()));
 
-            if (secondsRemaining <= 0) {
-                timer.stop()
-                soundAlarm.play()
-                timerDisplay.text = "00:00";
-                model.status = "finished";
-                model.remaining = model.time;
-                //var cbDone = findQmlElement(tabHome, "cbDone")
-                //cbDone.checked = true;
-                playpause.source = "qrc:/img/play-16.png"
-                playpause.playState = "paused"
-            }
-            else {
-                timerDisplay.text = addZero(remaining.getMinutes()) + "." + addZero(remaining.getSeconds());
-            }
+            timerDisplay.text = addZero(remaining.getMinutes()) + "." + addZero(remaining.getSeconds());
             model.remaining = timerDisplay.text;
             timerCirc.requestPaint();
         }

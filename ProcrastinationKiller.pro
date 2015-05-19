@@ -4,7 +4,7 @@ QT += qml quick widgets sql
 
 SOURCES += main.cpp \
     extensionmanager.cpp \
-    precisiontimer.cpp
+    alarm.cpp
 
 RESOURCES += qml.qrc
 
@@ -19,4 +19,4 @@ DISTFILES += \
 
 HEADERS += \
     include/extensionmanager.h \
-    include/precisiontimer.h
+    include/alarm.h
